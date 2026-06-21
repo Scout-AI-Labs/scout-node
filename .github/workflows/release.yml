@@ -21,4 +21,4 @@ jobs:
       - run: npm install
       - run: npm run build
       - name: Publish (no token; authenticates via GitHub OIDC)
-        run: npm publish --access public
+        run: npm publish --access public --provenance
