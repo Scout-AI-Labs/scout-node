@@ -1,10 +1,10 @@
 # Scout Node SDK
 
-Official Node/TypeScript SDK for the [Scout](https://usescout.sh) web-intelligence API — search, scrape, screenshot, extract, crawl, and company enrichment.
+Official Node/TypeScript SDK for the [Scout](https://usescout.sh) web-intelligence API: search, scrape, screenshot, extract, crawl, and company enrichment.
 
-- **Zero runtime dependencies.** Built entirely on the global `fetch` — no transitive supply chain.
-- **Fully typed.** Every endpoint, parameter, and error.
-- **Resilient.** Automatic retries with backoff + jitter, configurable timeouts, idempotency keys.
+- Built on the global `fetch`, so it runs on Node 18+, Deno, Bun, and edge runtimes.
+- Typed end to end: every endpoint, parameter, and error.
+- Automatic retries with backoff and jitter, configurable timeouts, and idempotency keys on writes.
 
 ## Requirements
 
@@ -19,7 +19,7 @@ yarn add @scout-ai/sdk
 
 ## Authentication
 
-Create an API key in the [Scout dashboard](https://usescout.sh). The client reads `SCOUT_API_KEY` from the environment by default:
+Generate an API key at [platform.usescout.sh/settings](https://platform.usescout.sh/settings). The client reads `SCOUT_API_KEY` from the environment by default:
 
 ```ts
 import Scout from '@scout-ai/sdk';
@@ -146,7 +146,7 @@ try {
 
 ## Retries
 
-Transient failures (connection errors, timeouts, 408/409/429/5xx) are retried automatically — **2 times by default**, with exponential backoff + jitter, honoring `Retry-After`. Write methods send an auto-generated `Idempotency-Key` so retries are safe.
+Transient failures (connection errors, timeouts, 408/409/429/5xx) are retried automatically, **2 times by default**, with exponential backoff and jitter, honoring `Retry-After`. Write methods send an auto-generated `Idempotency-Key` so retries are safe.
 
 ```ts
 const scout = new Scout({ maxRetries: 4 });        // client default
