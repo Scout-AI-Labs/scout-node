@@ -1,7 +1,7 @@
-import { APIResource } from './_base';
-import { autoPaginate } from '../pagination';
-import type { RequestOptions } from '../client';
-import type { ScoutResponse, ListsParams, SearchListParams } from '../types';
+import { APIResource } from './_base.js';
+import { autoPaginate } from '../pagination.js';
+import type { RequestOptions } from '../client.js';
+import type { ScoutResponse, ListsParams, SearchListParams } from '../types.js';
 
 /**
  * Find-all ("lists"): build a list of entities matching a natural-language

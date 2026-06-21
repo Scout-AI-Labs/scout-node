@@ -1,12 +1,12 @@
-import { APIResource } from './_base';
-import { autoPaginate } from '../pagination';
-import type { RequestOptions } from '../client';
+import { APIResource } from './_base.js';
+import { autoPaginate } from '../pagination.js';
+import type { RequestOptions } from '../client.js';
 import type {
   ScoutResponse,
   SearchParams,
   SearchListParams,
   AIQueryParams,
-} from '../types';
+} from '../types.js';
 
 /** Web search, agentic AI queries, and search-run history. */
 export class Search extends APIResource {

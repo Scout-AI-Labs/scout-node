@@ -1,5 +1,5 @@
-import { APIResource } from './_base';
-import type { RequestOptions } from '../client';
+import { APIResource } from './_base.js';
+import type { RequestOptions } from '../client.js';
 import type {
   ScoutResponse,
   CompanyDomainParams,
@@ -7,7 +7,7 @@ import type {
   CompanyByNameParams,
   CompanyByTickerParams,
   LogoParams,
-} from '../types';
+} from '../types.js';
 
 /** Company enrichment: profiles, logos, fonts, industry codes, styleguide. */
 export class Company extends APIResource {

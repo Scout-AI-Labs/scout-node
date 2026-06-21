@@ -1,12 +1,12 @@
-import { APIResource } from './_base';
-import { autoPaginate } from '../pagination';
-import type { RequestOptions } from '../client';
+import { APIResource } from './_base.js';
+import { autoPaginate } from '../pagination.js';
+import type { RequestOptions } from '../client.js';
 import type {
   ScoutResponse,
   MonitorCreateParams,
   MonitorUpdateParams,
   SearchListParams,
-} from '../types';
+} from '../types.js';
 
 /**
  * Scheduled searches ("monitors"): run a query on a cadence and receive new

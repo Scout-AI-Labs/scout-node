@@ -1,5 +1,5 @@
-import { APIResource } from './_base';
-import type { RequestOptions } from '../client';
+import { APIResource } from './_base.js';
+import type { RequestOptions } from '../client.js';
 import type {
   ScoutResponse,
   PageMarkdownParams,
@@ -7,7 +7,7 @@ import type {
   PageScreenshotParams,
   PageImagesParams,
   PageExtractParams,
-} from '../types';
+} from '../types.js';
 
 /** Single-page operations: markdown, html, screenshot, images, extract. */
 export class Page extends APIResource {

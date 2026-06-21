@@ -15,18 +15,18 @@ import {
   TimeoutError,
   AbortError,
   apiErrorFromStatus,
-} from './errors';
-import { VERSION, API_VERSION } from './version';
-import { Search } from './resources/search';
-import { Page } from './resources/page';
-import { Extract } from './resources/extract';
-import { Company } from './resources/company';
-import { Lists } from './resources/lists';
-import { Products } from './resources/products';
-import { Site } from './resources/site';
-import { Jobs } from './resources/jobs';
-import { Monitors } from './resources/monitors';
-import { Chat } from './resources/chat';
+} from './errors.js';
+import { VERSION, API_VERSION } from './version.js';
+import { Search } from './resources/search.js';
+import { Page } from './resources/page.js';
+import { Extract } from './resources/extract.js';
+import { Company } from './resources/company.js';
+import { Lists } from './resources/lists.js';
+import { Products } from './resources/products.js';
+import { Site } from './resources/site.js';
+import { Jobs } from './resources/jobs.js';
+import { Monitors } from './resources/monitors.js';
+import { Chat } from './resources/chat.js';
 
 const DEFAULT_BASE_URL = 'https://core.usescout.sh';
 const DEFAULT_TIMEOUT = 60_000;

@@ -9,9 +9,9 @@
  * ```
  */
 
-export { Scout } from './client';
-export { Scout as default } from './client';
-export type { ClientOptions, RequestOptions } from './client';
+export { Scout } from './client.js';
+export { Scout as default } from './client.js';
+export type { ClientOptions, RequestOptions } from './client.js';
 
 export {
   ScoutError,
@@ -28,8 +28,8 @@ export {
   UnprocessableEntityError,
   RateLimitError,
   InternalServerError,
-} from './errors';
+} from './errors.js';
 
-export { VERSION, API_VERSION } from './version';
+export { VERSION, API_VERSION } from './version.js';
 
-export * from './types';
+export * from './types.js';

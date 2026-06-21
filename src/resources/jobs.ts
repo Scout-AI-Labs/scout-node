@@ -1,7 +1,7 @@
-import { APIResource } from './_base';
-import { autoPaginate } from '../pagination';
-import type { RequestOptions } from '../client';
-import type { ScoutResponse, JobCreateParams, SearchListParams } from '../types';
+import { APIResource } from './_base.js';
+import { autoPaginate } from '../pagination.js';
+import type { RequestOptions } from '../client.js';
+import type { ScoutResponse, JobCreateParams, SearchListParams } from '../types.js';
 
 /**
  * Async tasks ("jobs"): submit a natural-language task, then poll the task or

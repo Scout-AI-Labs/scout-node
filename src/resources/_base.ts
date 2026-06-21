@@ -1,4 +1,4 @@
-import type { Scout } from '../client';
+import type { Scout } from '../client.js';
 
 /** Base class for every resource group. Holds a back-reference to the client. */
 export abstract class APIResource {

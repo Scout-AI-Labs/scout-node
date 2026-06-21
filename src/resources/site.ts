@@ -1,6 +1,6 @@
-import { APIResource } from './_base';
-import type { RequestOptions } from '../client';
-import type { ScoutResponse, SiteCrawlParams, SiteMapParams } from '../types';
+import { APIResource } from './_base.js';
+import type { RequestOptions } from '../client.js';
+import type { ScoutResponse, SiteCrawlParams, SiteMapParams } from '../types.js';
 
 /** Whole-site operations: crawl and sitemap discovery. */
 export class Site extends APIResource {

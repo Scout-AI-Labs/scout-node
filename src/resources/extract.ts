@@ -1,6 +1,6 @@
-import { APIResource } from './_base';
-import type { RequestOptions } from '../client';
-import type { ScoutResponse, ExtractParams } from '../types';
+import { APIResource } from './_base.js';
+import type { RequestOptions } from '../client.js';
+import type { ScoutResponse, ExtractParams } from '../types.js';
 
 /** Multi-URL structured extraction. */
 export class Extract extends APIResource {
