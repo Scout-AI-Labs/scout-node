@@ -108,4 +108,12 @@ export class Monitors extends APIResource {
       options,
     });
   }
+
+  /** Stream a monitor's events live (Server-Sent Events). */
+  streamEvents(monitorId: string, options?: RequestOptions) {
+    return this.streamSSE(
+      `/v1/monitors/${encodeURIComponent(monitorId)}/events`,
+      options,
+    );
+  }
 }

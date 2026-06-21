@@ -1,12 +1,12 @@
 /**
  * Core HTTP client for the Scout API.
  *
- * Zero runtime dependencies: built entirely on the global `fetch`,
- * `AbortController`, and `crypto` available in Node 18+, Deno, Bun, and
- * edge/Workers runtimes. Resource groups (search, page, extract, ...) hang
- * off the `Scout` client and call the shared `request()` method, which
- * handles auth headers, JSON encoding, timeouts, retries with exponential
- * backoff + jitter, idempotency keys, and error mapping.
+ * Built on the global `fetch`, `AbortController`, and `crypto` available in
+ * Node 18+, Deno, Bun, and edge/Workers runtimes. Resource groups (search,
+ * page, extract, ...) hang off the `Scout` client and call the shared
+ * `request()` method, which handles auth headers, JSON encoding, timeouts,
+ * retries with backoff and jitter, idempotency keys, and error mapping.
+ * Streaming endpoints use `stream()`, which yields Server-Sent Events.
  */
 
 import {
@@ -16,6 +16,7 @@ import {
   AbortError,
   apiErrorFromStatus,
 } from './errors.js';
+import { decodeSSE, type SSEvent } from './sse.js';
 import { VERSION, API_VERSION } from './version.js';
 import { Search } from './resources/search.js';
 import { Page } from './resources/page.js';
@@ -150,6 +151,54 @@ export class Scout {
         attempt += 1;
       }
     }
+  }
+
+  /**
+   * Internal: open a streaming (Server-Sent Events) request and yield parsed
+   * events. No retries — streams are long-lived; pass an AbortSignal to stop.
+   */
+  async *stream(req: InternalRequest): AsyncGenerator<SSEvent, void, unknown> {
+    const opts = req.options ?? {};
+    const isWrite = req.method !== 'GET';
+    const url = this.buildURL(req.path, req.query);
+    const headers = this.buildHeaders(req, opts, isWrite);
+    headers['accept'] = 'text/event-stream';
+    const bodyText =
+      req.body !== undefined && req.method !== 'GET'
+        ? JSON.stringify(req.body)
+        : undefined;
+
+    let res: Response;
+    try {
+      res = await this.fetchImpl(url, {
+        method: req.method,
+        headers,
+        body: bodyText,
+        signal: opts.signal,
+      });
+    } catch (err) {
+      if (opts.signal?.aborted) {
+        throw new AbortError('Request aborted', { cause: opts.signal.reason });
+      }
+      throw new ConnectionError(
+        err instanceof Error ? err.message : 'Network request failed',
+        { cause: err },
+      );
+    }
+
+    if (!res.ok) {
+      const text = await res.text();
+      const isJSON = (res.headers.get('content-type') ?? '').includes('json');
+      const parsed = isJSON && text ? safeJSON(text) : text;
+      throw apiErrorFromStatus(res.status, errorMessage(parsed, res.status), {
+        requestId: res.headers.get('x-request-id') ?? undefined,
+        headers: headersToObject(res.headers),
+        body: parsed,
+        code: extractCode(parsed),
+      });
+    }
+    if (!res.body) return;
+    yield* decodeSSE(res.body);
   }
 
   private async attempt<T>(

@@ -186,6 +186,27 @@ for await (const monitor of scout.monitors.iterate()) {
 }
 ```
 
+## Streaming
+
+Stream chat completions as OpenAI-style chunks, and stream live progress from async runs (search, jobs, find-all, monitors). Both are async iterables:
+
+```ts
+// Token-by-token chat
+for await (const chunk of scout.chat.completions.stream({
+  messages: [{ role: 'user', content: 'Summarize the latest EU AI regulation.' }],
+  web_search: true,
+})) {
+  process.stdout.write(chunk.choices?.[0]?.delta?.content ?? '');
+}
+
+// Live progress events from a deep-search run
+for await (const event of scout.search.streamEvents(searchId)) {
+  console.log(event.type, event);
+}
+```
+
+`streamEvents` is also available on `jobs`, `lists.runs`, and `monitors`. Pass an `AbortSignal` via the options argument to stop a stream early.
+
 ## Advanced configuration
 
 ```ts

@@ -24,7 +24,23 @@ before(async () => {
         res.end(JSON.stringify(obj));
       };
       const url = req.url.split('?')[0];
-      if (url === '/v1/search') {
+      const sse = (frames) => {
+        res.writeHead(200, { 'content-type': 'text/event-stream', 'x-request-id': 'req_abc123' });
+        res.end(frames.join(''));
+      };
+      if (url === '/v1/chat/completions') {
+        sse([
+          'data: {"choices":[{"delta":{"content":"Hel"}}]}\n\n',
+          'data: {"choices":[{"delta":{"content":"lo"}}]}\n\n',
+          'data: [DONE]\n\n',
+        ]);
+      } else if (url === '/v1/searches/abc/events') {
+        sse([
+          ': keepalive\n\n',
+          'event: run.progress\ndata: {"type":"run.progress","pct":50}\n\n',
+          'event: run.completed\ndata: {"type":"run.completed"}\n\n',
+        ]);
+      } else if (url === '/v1/search') {
         send(200, {
           ok: true,
           auth: req.headers['authorization'],
@@ -93,4 +109,20 @@ test('auto-pagination iterates', async () => {
   const items = [];
   for await (const item of client.search.iterate({ limit: 5 })) items.push(item);
   assert.deepEqual(items, [{ id: 1 }]);
+});
+
+test('chat completions stream yields deltas and stops at [DONE]', async () => {
+  const chunks = [];
+  for await (const chunk of client.chat.completions.stream({
+    messages: [{ role: 'user', content: 'hi' }],
+  })) {
+    chunks.push(chunk.choices[0].delta.content);
+  }
+  assert.deepEqual(chunks, ['Hel', 'lo']);
+});
+
+test('streamEvents yields parsed progress events', async () => {
+  const events = [];
+  for await (const evt of client.search.streamEvents('abc')) events.push(evt.type);
+  assert.deepEqual(events, ['run.progress', 'run.completed']);
 });

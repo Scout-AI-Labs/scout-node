@@ -63,6 +63,14 @@ export class Jobs extends APIResource {
     });
   }
 
+  /** Stream a job's progress events live (Server-Sent Events). */
+  streamEvents(taskId: string, options?: RequestOptions) {
+    return this.streamSSE(
+      `/v1/jobs/${encodeURIComponent(taskId)}/events`,
+      options,
+    );
+  }
+
   /** Fetch the result of a completed run. */
   runResult(runId: string, options?: RequestOptions): Promise<ScoutResponse> {
     return this.client.request({

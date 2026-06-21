@@ -8,9 +8,6 @@ export class Chat extends APIResource {
     /**
      * Create a chat completion. Shape mirrors the OpenAI Chat Completions API;
      * set `web_search: true` to ground the answer in live results.
-     *
-     * Note: streaming (`stream: true`) returns the raw response envelope in
-     * this release — consume `/v1/chat/completions` directly for SSE.
      */
     create: (params: ChatParams, options?: RequestOptions): Promise<ScoutResponse> =>
       this.client.request({
@@ -19,5 +16,34 @@ export class Chat extends APIResource {
         body: params,
         options,
       }),
+
+    /**
+     * Stream a chat completion as OpenAI-style `chat.completion.chunk` objects.
+     * Read token text from `chunk.choices[0].delta.content`.
+     *
+     * ```ts
+     * for await (const chunk of scout.chat.completions.stream({ messages })) {
+     *   process.stdout.write(chunk.choices?.[0]?.delta?.content ?? '');
+     * }
+     * ```
+     */
+    stream: (params: ChatParams, options?: RequestOptions): AsyncGenerator<ScoutResponse> =>
+      this.streamCompletion(params, options),
   };
+
+  private async *streamCompletion(
+    params: ChatParams,
+    options?: RequestOptions,
+  ): AsyncGenerator<ScoutResponse, void, unknown> {
+    const events = this.client.stream({
+      method: 'POST',
+      path: '/v1/chat/completions',
+      body: { ...params, stream: true },
+      options,
+    });
+    for await (const evt of events) {
+      if (evt.data === '[DONE]') return;
+      yield JSON.parse(evt.data) as ScoutResponse;
+    }
+  }
 }

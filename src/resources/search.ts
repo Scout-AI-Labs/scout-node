@@ -81,4 +81,12 @@ export class Search extends APIResource {
       options,
     });
   }
+
+  /** Stream a deep-search run's progress events live (Server-Sent Events). */
+  streamEvents(searchId: string, options?: RequestOptions) {
+    return this.streamSSE(
+      `/v1/searches/${encodeURIComponent(searchId)}/events`,
+      options,
+    );
+  }
 }

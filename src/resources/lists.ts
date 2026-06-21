@@ -94,5 +94,12 @@ export class Lists extends APIResource {
         path: `/v1/lists/runs/${encodeURIComponent(findallId)}/events`,
         options,
       }),
+
+    /** Stream a find-all run's progress events live (Server-Sent Events). */
+    streamEvents: (findallId: string, options?: RequestOptions) =>
+      this.streamSSE(
+        `/v1/lists/runs/${encodeURIComponent(findallId)}/events`,
+        options,
+      ),
   };
 }

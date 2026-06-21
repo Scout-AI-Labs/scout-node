@@ -31,5 +31,6 @@ export {
 } from './errors.js';
 
 export { VERSION, API_VERSION } from './version.js';
+export type { SSEvent } from './sse.js';
 
 export * from './types.js';
