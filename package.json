@@ -1,0 +1,53 @@
+{
+  "name": "@scout-ai/sdk",
+  "version": "0.1.0",
+  "description": "Official Node/TypeScript SDK for the Scout web-intelligence API",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist",
+    "src",
+    "README.md",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=18"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "prepublishOnly": "yarn build"
+  },
+  "keywords": [
+    "scout",
+    "web-scraping",
+    "search-api",
+    "web-intelligence",
+    "scrape",
+    "crawl",
+    "extract",
+    "company-enrichment",
+    "sdk"
+  ],
+  "author": "Scout AI Labs",
+  "license": "MIT",
+  "homepage": "https://usescout.sh",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Scout-AI-Labs/scout-node.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Scout-AI-Labs/scout-node/issues"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "typescript": "^5.5.0"
+  }
+}
